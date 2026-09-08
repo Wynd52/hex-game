@@ -6,8 +6,6 @@ from buttons import game_mode
 from matplotlib.widgets import Button
 from minmaxbot import minmax_bot
 
-
-
 # dorob class pre hexagons
 
 hexagons = []
@@ -16,7 +14,7 @@ swapper = True
 menu_open = False
 mode = "PvP"
 
-
+#Ai 
 farby = {
     "red":     (1.0, 0.0, 0.0),
     "green":   (0.0, 1.0, 0.0),
@@ -33,6 +31,7 @@ farby = {
     "navy":    (0.0, 0.0, 0.5),
     "gray":    (0.5, 0.5, 0.5)
 }
+#koniec Ai
 farba_1 = [ "red", (1.0, 0.0, 0.0)]
 farba_2 = ["blue", (0.0, 0.0, 1.0)]
 
@@ -172,9 +171,13 @@ def vyber_farby(fig, okraje):
     for (ax, btn), color in zip(menu2, farby_list):
         btn.on_clicked(lambda e, c=color: zmen2(e, c))
 
-def regime(n):
+def regime(n, fig):
     global mode
-    mode = n
+    if mode != n:
+        mode = n
+        reset_board(fig)
+    else:
+        mode = n
 
 def farbenie(event):
 
@@ -295,7 +298,10 @@ def hex_grid(pocet, velkost_hex=1):
     rezim = game_mode(fig, regime)
     vyber_farby(fig, okraje)
 
-    ax_reset = fig.add_axes([0.72, 0.95, 0.12, 0.05])
+    plt.axis("off")
+    
+    ax_reset = fig.add_axes([0.72, 0.95, 0.18, 0.05])
+    ax_reset.set_facecolor("gray")
     reset = Button(ax_reset, "Reset")
     reset.on_clicked(lambda event: reset_board(fig))
     
@@ -305,5 +311,4 @@ def hex_grid(pocet, velkost_hex=1):
 
     fig.canvas.mpl_connect("button_press_event", farbenie)
 
-    plt.axis("off")
     plt.show()
